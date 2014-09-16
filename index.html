@@ -3,6 +3,8 @@
 <html>
 <head>
   <title>Sequencer</title>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/styles.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/plugins.js"></script>
   <script>
@@ -45,12 +47,12 @@
 
 		  	window.onload = function() {
 		    var gui = new dat.GUI();
-		    gui.add(window, 'BPM', 20, 300);
+		    //gui.add(window, 'BPM', 20, 300);
 		    //gui.add(window, 'Filter', -1000, 1000);
 		    gui.add(window, 'Play');
 		    gui.add(window, 'Stop');
-		    gui.addColor(window, 'back');
-		    gui.addColor(window, 'textC');
+		    //gui.addColor(window, 'back');
+		    //gui.addColor(window, 'textC');
 		};
   </script>
   <script type="text/processing" data-processing-target="mycanvas">
@@ -160,11 +162,13 @@
 	    strokeWeight(2);
 	    textSize(20);
 
-	    //control container
-
 	    //draw light
 		for ( i = 0; i < 16; ++i ) {
-		    circle[i].show();
+			if (notes[window.beat_position] = i){
+				circle[i].glow();
+			}else {
+		    	circle[i].show();
+		    }
 		}
 
 		stroke(255);
@@ -195,6 +199,14 @@
 		text("HatC",17,155,15);
 		text("HatO",17,230,15);
 		text("Snare",17,305,15);
+
+		//controls
+		fill( 40 );
+		stroke( 255 );
+		rect( 75, 350, 200, 75 );
+		rect( 100, 375, 25, 25 );
+		triangle( 140, 375, 165, 387.5, 140, 400 );
+		//rect( 75, 350, 200, 75 );
 		
 		if (frameCount % 2 && stop == false) {
 			playBeat();
@@ -250,7 +262,7 @@
 		        stroke( 255 );
 		    }
 		    else {
-		    	fill( 200 );
+		    	fill( 100 );
 		    }
 	        rect(  cX,   cY, cWidth, cHeight );
 	        popMatrix();
@@ -320,6 +332,20 @@
 	        ellipse(  cX,   cY, cWidth, cHeight );
 	        popMatrix();
 	    }
+
+	    void glow()
+	    {
+	        pushMatrix();
+	        if ( !button ) {
+		        fill(225,225,225);
+		        stroke(100,0,0);
+		    }
+		    else {
+		    	fill( cColor );
+		    }
+	        ellipse(  cX,   cY, cWidth, cHeight );
+	        popMatrix();
+	    }
 	 
 	    void move(x, y)
 	    {
@@ -350,8 +376,8 @@
   </script>
 </head>
 <body>
-	<h1>Sequencer.<span>js</span></h1>
-	<div>   
+	<h1>Sequencer.<span>JS</span></h1>
+	<div id="container">   
 	  <canvas id="mycanvas"></canvas>
 	</div>
 </body>
